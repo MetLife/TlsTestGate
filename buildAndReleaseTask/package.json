@@ -1,0 +1,29 @@
+{
+  "name": "tlstestgate",
+  "version": "1.0.0",
+  "description": "Build/Release Task to test for non-compliant SSL/TLS settings on public or internal endpoints. This extension requires Python >=3.7.",
+  "main": "tlstestgate.js",
+  "scripts": {
+    "lint": "eslint . --ext .ts"
+  },
+  "author": "Joe Gatt",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "azure-pipelines-task-lib": "^2.11.1",
+    "azure-pipelines-tool-lib": "^0.13.2",
+    "is-ip": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.11.1",
+    "@types/q": "^1.5.4",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "eslint": "^7.10.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "typescript": "^4.0.3"
+  }
+}

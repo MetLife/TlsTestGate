@@ -1,0 +1,51 @@
+{
+    "manifestVersion": 1,
+    "id": "TlsTestGate",
+    "name": "SSL/TLS Test Gate",
+    "version": "1.0.0",
+    "publisher": "JoeGatt",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. This extension requires Python >=3.7.",
+    "tags": [
+        "Security",
+        "Azure Pipelines",
+        "Azure DevOps Extensions"
+      ],
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "links": {
+        "support": {
+          "uri": "mailto:joe@metlife.com"
+        }
+      },
+    "icons": {
+        "default": "images/extension-icon.png"        
+    },
+    "files": [
+        {
+        "path": "buildAndReleaseTask"
+        }
+    ],
+    "demands": [],
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/MetLife/tlstestgate"
+    },
+    "contributions": [
+        {
+            "id": "custom-build-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "buildAndReleaseTask"
+            }
+        }
+    ]
+}
