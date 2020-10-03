@@ -4,16 +4,18 @@
     "name": "SSL/TLS Test Gate",
     "version": "1.0.0",
     "publisher": "JoeGatt",
+    "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. This extension requires Python >=3.7.",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
-    ],    
-    "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. This extension requires Python >=3.7.",
+    ],
     "tags": [
         "Security",
         "Azure Pipelines",
-        "Azure DevOps Extensions"
+        "Azure DevOps Extensions",
+        "TLS",
+        "SSL"
       ],
     "categories": [
         "Azure Pipelines"
@@ -34,7 +36,12 @@
     "demands": [],
     "repository": {
         "type": "git",
-        "uri": "https://github.com/MetLife/tlstestgate"
+        "uri": "https://github.com/MetLife/TlsTestGate"
+    },
+    "content": {
+        "details": {
+            "path": "overview.md"
+        }
     },
     "contributions": [
         {
