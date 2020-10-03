@@ -36,4 +36,4 @@ The Mozilla SSL Configuration [Generator](https://ssl-config.mozilla.org/) is an
 
 ## Feedback
 
-Send me mail at joe@metlife.com or visit our page at https://github.com/MetLife/TlsTestGate
+Send me mail at joe@metlife.com
