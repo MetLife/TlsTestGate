@@ -68,21 +68,21 @@ def resolve_dnsname_to_ip(dns_server: IpAddr, dnsname: FQDN) -> IpAddr:
             ip_list.append(answer.address)
         return ip_list[0]  # Return the first IP of the DNS Answer
 
-    except resolver.NoAnswer:
-        raise ValueError(f"{dnsname} exits but no A record")
+    except resolver.NoAnswer as err:
+        raise ValueError(f"{dnsname} exits but no A record") from err
 
-    except resolver.NXDOMAIN:
-        raise ValueError(f"The DNS name {dnsname} does not exist")
+    except resolver.NXDOMAIN as err:
+        raise ValueError(f"The DNS name {dnsname} does not exist") from err
 
-    except resolver.Timeout:
-        raise ValueError("The DNS operation timed out")
+    except resolver.Timeout as err:
+        raise ValueError("The DNS operation timed out") from err
 
     except resolver.NoNameservers as err:
-        raise ValueError(err.msg)  # Should trigger if a DNS server is offline
+        raise ValueError(err.msg) from err  # Should trigger if a DNS server is offline
 
-    except Exception:
+    except Exception as err:
         # If you are here, you are jacked
-        raise ValueError("Catch all error in scanner.py")
+        raise ValueError("Catch all error in scanner.py") from err
 
 
 def scan(dns_server: IpAddr, name: str, port: int) -> dict:
@@ -183,7 +183,7 @@ def main() -> None:
 
     scan_results = scan(dns, target, arg_port)
     write_output(target, scan_results)
-    
+
     output = os.path.normpath(os.path.abspath(os.path.expanduser(os.path.expandvars("test-output.xml"))))
     mode = "JUnit"
 
