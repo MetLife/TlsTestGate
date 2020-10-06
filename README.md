@@ -30,6 +30,21 @@ There are four inputs to the extension: Base URL, port, DNS server, and fail tas
 
 * "Fail task" will fail the task in the build or release pipeline if the test fails. The default is to simply publish the test results whether the test passes or fails. Check the box if you want to gate on a failing test.
 
+## YAML sample
+
+Below is sample YAML to insert into your build or release pipeline.
+
+```
+steps:
+- task: JoeGatt.TlsTestGate.custom-build-release-task.TlsTestGate@1
+  displayName: 'github.com SSL/TLS Test Gate'
+  inputs:
+    baseURL: github.com
+    port: 443
+    dnsserver: 8.8.8.8
+    decision: true
+```
+
 ## Fixing Issues Identified by TlsTestGate
 
 The Mozilla SSL Configuration [Generator](https://ssl-config.mozilla.org/) is an excellent resource to use to securely configure a web server. However, SSL/TLS settings are also often set on load balancers or reverse proxies. Fixing your local web server config may not fix the issue, depending on your network topology.
