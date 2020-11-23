@@ -1,10 +1,10 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "2bc89220-29c5-4a7f-9027-e8be440d01e9",
+    "id": "47ba6c2e-d5c2-44e7-bd91-5792159eb4eb",
     "name": "TlsTestGate",
     "friendlyName": "SSL/TLS Test Gate",
     "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. This extension requires Python >=3.7.",
-    "helpMarkDown": "Email joe@metlife.com for support.",
+    "helpMarkDown": "Email gattjoseph@hotmail.com for support.",
     "category": "Azure Pipelines",
     "author": "Joe Gatt",
     "version": {
