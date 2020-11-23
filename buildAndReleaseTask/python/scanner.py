@@ -69,16 +69,16 @@ def resolve_dnsname_to_ip(dns_server: IpAddr, dnsname: FQDN) -> IpAddr:
         return ip_list[0]  # Return the first IP of the DNS Answer
 
     except resolver.NoAnswer as err:
-        raise ValueError(f"{dnsname} exits but no A record") from err
+        raise Exception(f"{dnsname} exists but no A record.") from err
 
     except resolver.NXDOMAIN as err:
-        raise ValueError(f"The DNS name {dnsname} does not exist") from err
+        raise Exception(f"The DNS name {dnsname} does not exist.") from err
 
     except resolver.Timeout as err:
-        raise ValueError("The DNS operation timed out") from err
+        raise Exception("The DNS operation timed out.") from err
 
     except resolver.NoNameservers as err:
-        raise ValueError(err.msg) from err  # Should trigger if a DNS server is offline
+        raise Exception(err.msg) from err  # Should trigger if a DNS server is offline
 
     except Exception as err:
         # If you are here, you are jacked
@@ -97,8 +97,8 @@ def scan(dns_server: IpAddr, name: str, port: int) -> dict:
         target_ip = resolve_dnsname_to_ip(dns_server, name)
         scan_output["IP"] = target_ip
 
-    except ValueError as err:
-        scan_output["Results"].append(err)
+    except Exception as err:
+        scan_output["Results"].append(err.args[0])
         return scan_output
 
     server_location = ServerNetworkLocationViaDirectConnection(name, port, target_ip)  # pylint: disable=too-many-function-args
@@ -185,12 +185,11 @@ def main() -> None:
     write_output(target, scan_results)
 
     output = os.path.normpath(os.path.abspath(os.path.expanduser(os.path.expandvars("test-output.xml"))))
-    mode = "JUnit"
 
     # Borrowed from pytest-azurepipelines
     # https://github.com/tonybaloney/pytest-azurepipelines/blob/master/pytest_azurepipelines.py
     print(
-        f"##vso[results.publish type={mode};runTitle='TlsTestGate';failTaskOnFailedTests={decision};publishRunAttachments=false;]{output}"
+        f"##vso[results.publish type=JUnit;runTitle='TlsTestGate';failTaskOnFailedTests={decision};publishRunAttachments=false;]{output}"
     )
 
 

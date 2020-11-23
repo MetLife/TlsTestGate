@@ -100,9 +100,18 @@ export INPUT_DECISION = false
 node tlstestgate.js
 ```
 
+## Testing the Scanner
+
+To test the TLS/SSL scanning functionality, run:
+
+```bash
+cd tests
+pytest -v test_tlstestgate.py --cov=buildAndReleaseTask --cov-report=xml
+```
+
 ## Known Issues and Limitations of the Microsoft hosted Azure Pipeline agent
 
-If you intend to test a private endpoint, it is probable that the Microsoft hosted agents do not have access to your internal network. If you want to test a private endpoint, please use a self-hosted Azure Pipeline agent. For self-hosted agents, Python >= 3.7.x is required. Please refer to the links below for your target platform:
+If you intend to test a private endpoint, it is probable that the Microsoft hosted agents do not have access to your internal network. If you want to test a private endpoint, please use a self-hosted Azure Pipeline agent. For self-hosted agents, Python 3.7 or 3.8 is required, Python 3.9 is not supported at this time. Please refer to the links below for your target platform:
 
 * [Linux](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-linux?view=azure-devops)
 * [MacOS](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/v2-osx?view=azure-devops)
@@ -116,4 +125,4 @@ The location of the latest self-hosted agents is [here](https://docs.microsoft.c
 
 ## Feedback
 
-Send me mail at joe@metlife.com
+Send me mail at gattjoseph@hotmail.com
