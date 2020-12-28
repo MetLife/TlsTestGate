@@ -4,7 +4,7 @@
  * @baseURL - url to scan.
  * @port (optional) - port to scan (default is 443)
  * @dnsserver dnsserver to use (default is 8.8.8.8)
- * @decision whether or not to fail the task on failed test
+ * @failBuild whether or not to fail the task on failed test
  */
 
 import * as tl from 'azure-pipelines-task-lib/task';
@@ -21,7 +21,7 @@ async function run(): Promise<void> {
         const baseURL: string = <string>tl.getInput('baseURL', true);
         const port: string = <string>tl.getInput('port', true);
         const dnsserver: string = <string>tl.getInput('dnsserver', true);
-        const decision: boolean = <boolean>tl.getBoolInput('decision', true);
+        const decision: boolean = <boolean>tl.getBoolInput('failBuild', true);
 
         // Get failTaskOnFailedTests preference
         let testDecision: string;
@@ -48,56 +48,71 @@ async function run(): Promise<void> {
             throw new Error(tl.loc('dnsserverNotValid'));
         }
 
-        const pypath: string = await getPythonPath();
-        console.log('PYTHON PATH: ' + `${pypath}`);
+        // Get Python 3 path
+        const pyPath: string = await getPythonPath();
+        console.log('PYTHON PATH: ' + `${pyPath}`);
 
-        // Install setuptools and wheel
-        const pythonsetup: trm.ToolRunner = tl.tool(pypath);
-        pythonsetup.arg('-m');
-        pythonsetup.arg('pip');
-        pythonsetup.arg('install');
-        pythonsetup.arg('--upgrade');
-        //pythonsetup.arg('--user');
-        pythonsetup.arg('pip');
-        pythonsetup.arg('setuptools');
-        pythonsetup.arg('wheel');
-        const setuptoolsinstall: number = await pythonsetup.exec();
-        tl.setResult(tl.TaskResult.Succeeded, tl.loc('pipReturnCode', setuptoolsinstall));
+        try {
+            // Install setuptools and wheel
+            const pythonsetup: trm.ToolRunner = tl.tool(pyPath);
+            pythonsetup.arg('-m');
+            pythonsetup.arg('pip');
+            pythonsetup.arg('install');
+            pythonsetup.arg('--upgrade');
+            pythonsetup.arg('pip');
+            pythonsetup.arg('setuptools');
+            pythonsetup.arg('wheel');
+            await pythonsetup.exec();
+            tl.setResult(tl.TaskResult.Succeeded, 'python setup was successful.');
 
-        // Install dnspython, junitparser, and sslyze
-        const python3: trm.ToolRunner = tl.tool(pypath);
-        python3.arg('-m');
-        python3.arg('pip');
-        python3.arg('install');
-        python3.arg('--upgrade');
-        //python3.arg('--user');
-        python3.arg('dnspython==2.0.0');
-        python3.arg('junitparser');
-        python3.arg('sslyze==3.0.8');
-        const pipinstall: number = await python3.exec();
-        tl.setResult(tl.TaskResult.Succeeded, tl.loc('pipReturnCode', pipinstall));
+        } catch (err) {
 
-        // Run the scan and generate the results
-        const scan: trm.ToolRunner = tl.tool(pypath);
-        scan.arg(path.join(__dirname, './python/scanner.py'));
-        scan.arg('--dns');
-        scan.arg(`${dnsserver}`);
-        scan.arg('--target');
-        scan.arg(`${hostname}`);
-        scan.arg('--port');
-        scan.arg(`${port}`);
-        scan.arg('--decision');
-        scan.arg(`${testDecision}`);
-        const test: number = await scan.exec();
-        tl.setResult(tl.TaskResult.Succeeded, tl.loc('scanReturnCode', test));
+            return tl.setResult(tl.TaskResult.Failed, 'python setup failed.');
+        }
 
-        return;
+        try {
+            // Install dnspython, junitparser, and sslyze
+            const packageSetup: trm.ToolRunner = tl.tool(pyPath);
+            packageSetup.arg('-m');
+            packageSetup.arg('pip');
+            packageSetup.arg('install');
+            packageSetup.arg('--upgrade');
+            packageSetup.arg('dnspython==2.0.0');
+            packageSetup.arg('junitparser');
+            packageSetup.arg('sslyze==3.1.0');
+            await packageSetup.exec();
+            tl.setResult(tl.TaskResult.Succeeded, 'Python package install was successful.');
+        
+        } catch (err) {
+
+            return tl.setResult(tl.TaskResult.Failed, 'Python package install failed.');
+        }
+
+        try {
+            // Run the scan and generate the results
+            const scan: trm.ToolRunner = tl.tool(pyPath);
+            scan.arg(path.join(__dirname, './python/scanner.py'));
+            scan.arg('--dns');
+            scan.arg(`${dnsserver}`);
+            scan.arg('--target');
+            scan.arg(`${hostname}`);
+            scan.arg('--port');
+            scan.arg(`${port}`);
+            scan.arg('--decision');
+            scan.arg(`${testDecision}`);
+            await scan.exec();
+            
+            return tl.setResult(tl.TaskResult.Succeeded, 'Scan ran successfully.');
+        
+        } catch (err) {
+            tl.setResult(tl.TaskResult.Failed, 'Scan was unsuccessful.');
+
+        }
 
     } catch (err) {
         tl.error(err.message);
         tl.setResult(tl.TaskResult.Failed, tl.loc('taskFailed', err.message));
 
-        return;
     }
 }
 
