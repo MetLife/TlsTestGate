@@ -40,9 +40,15 @@ export async function getPythonPath(): Promise<string> {
     } else {
         // Self-Hosted Agent
         console.log('AGENT: Extension running on a self hosted Agent.');
-        const pythonPath: string = await getSelfHostedPythonPath();
+        try {
+            const pythonPath: string = await getSelfHostedPythonPath();
 
-        return pythonPath;
+            return pythonPath;
+
+        } catch (err) {
+
+            return err;
+        }
 
     }
 }
@@ -52,7 +58,7 @@ export async function getPythonPath(): Promise<string> {
  */
 async function getSelfHostedPythonPath(): Promise<string> {
 
-    const selfHostedPythonPath: string = tl.which('python', true);
+    const selfHostedPythonPath: string = tl.which('python3', true);
 
     if (selfHostedPythonPath != null) {
         const pythonVer: trm.ToolRunner = tl.tool(selfHostedPythonPath);
@@ -62,14 +68,15 @@ async function getSelfHostedPythonPath(): Promise<string> {
         const result: string = await pythonVer.execSync().stdout;
         console.log('PYTHON VERSION: ' + `${result}`);
 
-        if (result < '3.7') {
-            // Change this error to mean wrong python version
-            throw new Error('Python >= 3.7 is required.');
+        // Python 3.7 or 3.8 is required, Python 3.9 is not supported at this time
+        if (result < '3.7' || result >= '3.9') {
+
+            throw new Error('Python 3.7 or 3.8 is required, Python 3.9 is not supported at this time.');
         }
 
     } else {
-        // Python not installed
-        throw new Error('Python installation not found.');
+        // Python3 not installed
+        throw new Error('Python3 installation not found.');
     }
 
     return selfHostedPythonPath;

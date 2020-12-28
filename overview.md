@@ -2,7 +2,7 @@
 
 ## Overview
 
-Test public or internal endpoints for non-compliant SSL/TLS settings. The extension can be inserted into a build or release pipeline and can serve as a compliance gate. This extension leverages the [SSLyze](https://github.com/nabla-c0d3/sslyze) API. Currently, SSL 2.0/3.0 and TLS 1.0/1.1 cipher suites are considered non-compliant and will fail the scan. Additionally, certain TLS 1.2 ciphers that are considered "weak" will also fail the scan.
+Test public or internal endpoints for non-compliant SSL/TLS settings. The extension can be inserted into a build or release pipeline and can serve as a compliance gate. This extension leverages the [SSLyze](https://github.com/nabla-c0d3/sslyze) API. Currently, SSL 2.0/3.0 and TLS 1.0/1.1 cipher suites are considered non-compliant. Additionally, certain TLS 1.2 ciphers that are considered "weak" are also considered non-compliant.
 
 ## Valid TLS 1.2 Ciphers
 
@@ -20,7 +20,7 @@ Some cipher suites within TLS 1.2 are considered [weak](https://blog.qualys.com/
 
 ## Usage
 
-There are four inputs to the extension: Base URL, port, DNS server, and fail task:
+There are four inputs to the extension: Base URL, port, DNS server, and an option to fail the build or release:
 
 * "Base URL" should be the DNS domain name or IP that you would like to scan (i.e., github.com or 140.82.113.4)
 
@@ -28,9 +28,13 @@ There are four inputs to the extension: Base URL, port, DNS server, and fail tas
 
 * Since corporations often use [split-view DNS](https://en.wikipedia.org/wiki/Split-horizon_DNS), "DNS server" in this context is the network viewpoint you want to scan, either internal or external. This is accomplished by specifying a valid DNS server to use for name resolution. The default value for external will use Google (e.g. 8.8.8.8)
 
-* "Fail task" will fail the task in the build or release pipeline if the test fails. The default is to simply publish the test results whether the test passes or fails. Check the box if you want to gate on a failing test.
+* "Fail task" will fail the build or release if non-compliant SSL/TLS settings are identified. The default is to publish the test results whether or not non-compliant settings are identified. Check the box if you want to gate on a failing test.
 
-## YAML sample
+### Classic Pipeline Example
+
+![TlsTestGate Extension](https://github.com/MetLife/TlsTestGate/blob/master/images/tlstestgateextension.png)
+
+### YAML sample
 
 Below is sample YAML to insert into your build or release pipeline.
 
@@ -45,10 +49,13 @@ steps:
     decision: true
 ```
 
+## Results
+Vulnerabilities (if any) are automatically published to the build or release pipeline. To view them, simply click on the "Tests" tab. For each vulnerability discovered, a "failed test" will appear in the results.
+
+![TlsTestGate Summary Results](https://github.com/MetLife/TlsTestGate/blob/master/images/resultsummary.png)
+
+![TlsTestGate Summary Detail](https://github.com/MetLife/TlsTestGate/blob/master/images/resultdetail.png)
+
 ## Fixing Issues Identified by TlsTestGate
 
 The Mozilla SSL Configuration [Generator](https://ssl-config.mozilla.org/) is an excellent resource to use to securely configure a web server. However, SSL/TLS settings are also often set on load balancers or reverse proxies. Fixing your local web server config may not fix the issue, depending on your network topology.
-
-## Feedback
-
-Send me mail at joe@metlife.com
