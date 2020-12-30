@@ -32,7 +32,7 @@ There are four inputs to the extension: Base URL, port, DNS server, and an optio
 
 ### Classic Pipeline Example
 
-![TlsTestGate Extension](https://github.com/MetLife/TlsTestGate/blob/master/images/tlstestgateextension.png)
+![TlsTestGate Extension](/images/tlstestgateextension.png)
 
 ### YAML sample
 
@@ -52,9 +52,9 @@ steps:
 ## Results
 Vulnerabilities (if any) are automatically published to the build or release pipeline. To view them, simply click on the "Tests" tab. For each vulnerability discovered, a "failed test" will appear in the results.
 
-![TlsTestGate Summary Results](https://github.com/MetLife/TlsTestGate/blob/master/images/resultsummary.png)
+![TlsTestGate Summary Results](/images/resultsummary.png)
 
-![TlsTestGate Summary Detail](https://github.com/MetLife/TlsTestGate/blob/master/images/resultdetail.png)
+![TlsTestGate Summary Detail](/images/resultdetail.png)
 
 ## Fixing Issues Identified by TlsTestGate
 
