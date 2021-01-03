@@ -4,7 +4,7 @@
   "description": "Build/Release Task to test for non-compliant SSL/TLS settings on public or internal endpoints. This extension requires Python 3.7 or 3.8, Python 3.9 is not supported at this time.",
   "main": "tlstestgate.js",
   "scripts": {
-    "test": "mocha -r ts-node/register test/*.ts"
+    "test": "mocha -r ts-node/register test/*.ts --reporter xunit --reporter-option output=ResultsFile.xml"
   },
   "author": "Joe Gatt",
   "license": "Apache-2.0",
