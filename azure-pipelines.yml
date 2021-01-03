@@ -45,7 +45,7 @@ stages:
 
 - stage: 'getPythonPath_tests'
   jobs:
-  - job:
+  - job: TestonLinux
     pool:
       vmImage: 'ubuntu-latest'
       demands: npm
@@ -70,7 +70,7 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
 
-  - job:
+  - job: TestonWindows
     pool:
       vmImage: 'windows-latest'
       demands: npm
@@ -95,7 +95,7 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
 
-  - job:
+  - job: TestonOSX
     pool:
       vmImage: 'macos-latest'
       demands: npm
