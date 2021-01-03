@@ -43,7 +43,7 @@ stages:
         codecoveragetool: Cobertura
         summaryFileLocation: '**/coverage.xml'
 
-- stage: 'getPythonPath_tests_linux'
+- stage: 'getPythonPath_tests'
   jobs:
   - job:
     pool:
@@ -70,8 +70,6 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
 
-- stage: 'getPythonPath_tests_windows'
-  jobs:
   - job:
     pool:
       vmImage: 'windows-latest'
@@ -97,8 +95,6 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
 
-- stage: 'getPythonPath_tests_macos'
-  jobs:
   - job:
     pool:
       vmImage: 'macos-latest'
