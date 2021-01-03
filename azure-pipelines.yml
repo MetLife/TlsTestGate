@@ -6,7 +6,7 @@
 stages:
 - stage: 'Python37 and Python38 tests'
   jobs:
-  - job: 'Python37 and Python38 tests'
+  - job:
     pool:
       vmImage: 'ubuntu-latest'
 
@@ -43,10 +43,9 @@ stages:
         codecoveragetool: Cobertura
         summaryFileLocation: '**/coverage.xml'
 
-stages: 
 - stage: 'getPythonPath.ts tests - linux'
   jobs:
-  - job: 'getPythonPath.ts tests - linux'
+  - job:
     pool:
       vmImage: 'ubuntu-latest'
       demands: npm
@@ -71,10 +70,9 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
 
-stages:
 - stage: 'getPythonPath.ts tests - windows'
   jobs:
-  - job: 'getPythonPath.ts tests - windows'
+  - job:
     pool:
       vmImage: 'windows-latest'
       demands: npm
@@ -99,10 +97,9 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
 
-stages:
 - stage: 'getPythonPath.ts tests - macos'
   jobs:
-  - job: 'getPythonPath.ts tests - macos'
+  - job:
     pool:
       vmImage: 'macos-latest'
       demands: npm
