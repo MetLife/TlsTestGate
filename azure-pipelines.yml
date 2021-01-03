@@ -3,115 +3,126 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-jobs:
-  job: 'Python37 and Python38 tests'
-  pool:
-    vmImage: 'ubuntu-latest'
+stages:
+- stage: 'Python37 and Python38 tests'
+  jobs:
+  - job: 'Python37 and Python38 tests'
+    pool:
+      vmImage: 'ubuntu-latest'
 
-  strategy:
-    matrix:
-      Python37:
-        python.version: '3.7'
-      Python38:
-        python.version: '3.8'
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
 
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
 
-  - script: python -m pip install --upgrade pip setuptools wheel
-    displayName: 'Install tools'
+    - script: python -m pip install --upgrade pip setuptools wheel
+      displayName: 'Install tools'
 
 
-  - script: python -m pip install --upgrade tox
-    displayName: 'Install Tox'
+    - script: python -m pip install --upgrade tox
+      displayName: 'Install Tox'
 
-  - script: tox -e py
-    displayName: 'Run Tox'
+    - script: tox -e py
+      displayName: 'Run Tox'
 
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
-    inputs:
-      testResultsFiles: '**/test-output.xml'
-      testRunTitle: 'Publish test results for Python $(python.version)'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: '**/test-output.xml'
+        testRunTitle: 'Publish test results for Python $(python.version)'
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codecoveragetool: Cobertura
-      summaryFileLocation: '**/coverage.xml'
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codecoveragetool: Cobertura
+        summaryFileLocation: '**/coverage.xml'
 
-  job: 'getPythonPath.ts tests - linux'
-  pool:
-    vmImage: 'ubuntu-latest'
-    demands: npm
+stages: 
+- stage: 'getPythonPath.ts tests - linux'
+  jobs:
+  - job: 'getPythonPath.ts tests - linux'
+    pool:
+      vmImage: 'ubuntu-latest'
+      demands: npm
 
-  steps:
-  - task: Npm@1
-    displayName: 'npm install'
-    inputs:
-      workingDir: buildAndReleaseTask
-      verbose: false
+    steps:
+    - task: Npm@1
+      displayName: 'npm install'
+      inputs:
+        workingDir: buildAndReleaseTask
+        verbose: false
 
-  - task: Npm@1
-    displayName: 'mocha tests'
-    inputs:
-      command: 'custom'
-      workingDir: buildAndReleaseTask
-      customCommand: 'npm test'
-      verbose: false
+    - task: Npm@1
+      displayName: 'mocha tests'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm test'
+        verbose: false
 
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: '**/ResultsFile.xml'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/ResultsFile.xml'
 
-  job: 'getPythonPath.ts tests - windows'
-  pool:
-    vmImage: 'windows-latest'
-    demands: npm
+stages:
+- stage: 'getPythonPath.ts tests - windows'
+  jobs:
+  - job: 'getPythonPath.ts tests - windows'
+    pool:
+      vmImage: 'windows-latest'
+      demands: npm
 
-  steps:
-  - task: Npm@1
-    displayName: 'npm install'
-    inputs:
-      workingDir: buildAndReleaseTask
-      verbose: false
+    steps:
+    - task: Npm@1
+      displayName: 'npm install'
+      inputs:
+        workingDir: buildAndReleaseTask
+        verbose: false
 
-  - task: Npm@1
-    displayName: 'mocha tests'
-    inputs:
-      command: 'custom'
-      workingDir: buildAndReleaseTask
-      customCommand: 'npm test'
-      verbose: false
+    - task: Npm@1
+      displayName: 'mocha tests'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm test'
+        verbose: false
 
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: '**/ResultsFile.xml'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/ResultsFile.xml'
 
-  job: 'getPythonPath.ts tests - macos'
-  pool:
-    vmImage: 'macos-latest'
-    demands: npm
+stages:
+- stage: 'getPythonPath.ts tests - macos'
+  jobs:
+  - job: 'getPythonPath.ts tests - macos'
+    pool:
+      vmImage: 'macos-latest'
+      demands: npm
 
-  steps:
-  - task: Npm@1
-    displayName: 'npm install'
-    inputs:
-      workingDir: buildAndReleaseTask
-      verbose: false
+    steps:
+    - task: Npm@1
+      displayName: 'npm install'
+      inputs:
+        workingDir: buildAndReleaseTask
+        verbose: false
 
-  - task: Npm@1
-    displayName: 'mocha tests'
-    inputs:
-      command: 'custom'
-      workingDir: buildAndReleaseTask
-      customCommand: 'npm test'
-      verbose: false
+    - task: Npm@1
+      displayName: 'mocha tests'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm test'
+        verbose: false
 
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: '**/ResultsFile.xml'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/ResultsFile.xml'
