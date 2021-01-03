@@ -22,11 +22,10 @@ describe('getPythonPath.ts tests', function() {
       
       // Check to see if the first part of the path is in the pythonPath, which would indicate
       // that we are using a Microsoft hosted agent
-      const pathMatch = hostedToolCache.filter(x => x.includes(pythonPath));
 
-      if (pathMatch && pathMatch.length) {
+      if (hostedToolCache.filter(x => x.includes(pythonPath))) {
         console.log('Microsoft hosted Python path: ' + pythonPath);
-        expect(pythonPath).to.have.string(pathMatch);
+        expect(pythonPath).to.have.string(hostedToolCache.filter(x => x.includes(pythonPath)));
 
       } else {
         const expectedPythonPath: string = tl.which('python3', true);
