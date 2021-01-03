@@ -69,6 +69,7 @@ stages:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
+        testRunTitle: 'Publish test results for getPythonPath.ts on linux'
 
   - job: TestonWindows
     pool:
@@ -94,6 +95,7 @@ stages:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
+        testRunTitle: 'Publish test results for getPythonPath.ts on Windows'
 
   - job: TestonOSX
     pool:
@@ -119,3 +121,4 @@ stages:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
+        testRunTitle: 'Publish test results for getPythonPath.ts on MacOS'
