@@ -62,7 +62,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm test'
+        customCommand: 'test'
         verbose: false
 
     - task: PublishTestResults@2
@@ -87,7 +87,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm test'
+        customCommand: 'test'
         verbose: false
 
     - task: PublishTestResults@2
@@ -112,7 +112,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm test'
+        customCommand: 'test'
         verbose: false
 
     - task: PublishTestResults@2
