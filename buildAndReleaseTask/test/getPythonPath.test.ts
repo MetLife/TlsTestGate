@@ -12,23 +12,33 @@ describe('getPythonPath.ts tests', function() {
       // These are the locations of the tool cache for Python 3.x.x on Microsoft hosted agents.
       // My code is asking for Python 3.8; however, due to semantic versioning I cannot test the
       // full path to Python3 because an upgrade from 3.8.6 to 3.8.7 would break the test unnecessarily
-      const hostedToolCache: Array<string> = [
+      const hostedToolCache: string[] = [
         'C:\\hostedtoolcache\\windows\\python\\3.8', // Windows
         '/opt/hostedtoolcache/Python/3.8',           // Linux
         '/Users/runner/hostedtoolcache/Python/3.8'   // OS X
       ];
+
       // Get the Python path
       const pythonPath: string = await getPythonPath();
-      
+      console.log('pythonPath: ' + pythonPath);
+      let pathMatch = false
       // Check to see if the first part of the path is in the pythonPath, which would indicate
       // that we are using a Microsoft hosted agent
-
-      if (hostedToolCache.filter(x => x.includes(pythonPath))) {
+      for (let i of hostedToolCache) {
+        if (pythonPath.includes(i)) {
+          pathMatch = true
+        }
+      }
+      
+      console.log('pathMatch ' + pathMatch)
+      
+      if (pathMatch) {
         console.log('Microsoft hosted Python path: ' + pythonPath);
         expect(pythonPath).to.have.string(hostedToolCache.filter(x => x.includes(pythonPath)));
 
       } else {
         const expectedPythonPath: string = tl.which('python3', true);
+        
         console.log('Self-hosted Python path: ' + pythonPath);
         assert.equal(pythonPath, expectedPythonPath);
 
