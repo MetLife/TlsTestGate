@@ -169,3 +169,4 @@ node_modules/
 *.js
 *.vsix
 .taskkey
+ResultsFile.xml

@@ -39,7 +39,7 @@ export async function getPythonPath(): Promise<string> {
 
     } else {
         // Self-Hosted Agent
-        console.log('AGENT: Extension running on a self hosted Agent.');
+        console.log('AGENT: Extension running on a self-hosted Agent.');
         try {
             const pythonPath: string = await getSelfHostedPythonPath();
 
