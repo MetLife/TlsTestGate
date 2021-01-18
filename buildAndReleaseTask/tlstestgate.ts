@@ -78,7 +78,7 @@ async function run(): Promise<void> {
             packageSetup.arg('install');
             packageSetup.arg('--upgrade');
             packageSetup.arg('dnspython==2.0.0');
-            packageSetup.arg('junitparser');
+            packageSetup.arg('junitparser==1.6.3');
             packageSetup.arg('sslyze==3.1.0');
             await packageSetup.exec();
             tl.setResult(tl.TaskResult.Succeeded, 'Python package install was successful.');
