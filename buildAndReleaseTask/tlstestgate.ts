@@ -77,7 +77,7 @@ async function run(): Promise<void> {
             packageSetup.arg('pip');
             packageSetup.arg('install');
             packageSetup.arg('-r');
-            packageSetup.arg(path.join(__dirname, '../requirements.txt'));
+            packageSetup.arg(path.join(__dirname, 'requirements.txt'));
             //packageSetup.arg('--upgrade');
             //packageSetup.arg('dnspython==2.0.0');
             //packageSetup.arg('junitparser==1.6.3');

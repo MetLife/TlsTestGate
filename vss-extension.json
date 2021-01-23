@@ -36,9 +36,6 @@
         },
         {
             "path": "images", "addressable": true
-        },
-        {
-            "file": "./requirements.txt"
         }
     ],
     "demands": [],
