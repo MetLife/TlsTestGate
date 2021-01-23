@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 stages:
-- stage: 'Python 3.6 - 3.9 tests'
+- stage: 'Python Tests'
   jobs:
   - job:
     pool:
