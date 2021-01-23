@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 stages:
-- stage: 'Python37_and_Python38_tests'
+- stage: 'Python 3.6 - 3.9 tests'
   jobs:
   - job:
     pool:
@@ -12,10 +12,14 @@ stages:
 
     strategy:
       matrix:
+        Python36:
+          python.version: '3.6'
         Python37:
           python.version: '3.7'
         Python38:
           python.version: '3.8'
+        Python39:
+          python.version: '3.9'
 
     steps:
     - task: UsePythonVersion@0

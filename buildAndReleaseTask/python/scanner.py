@@ -144,10 +144,10 @@ def scan(dns_server: IpAddr, name: str, port: int) -> dict:
 def new_results() -> dict:
     """ Create the results dict """
 
-    return {'Hostname':     None,
-            'IP':           None,
-            'DNS':          None,
-            'Results':      []}
+    return {"Hostname":     None,
+            "IP":           None,
+            "DNS":          None,
+            "Results":      []}
 
 
 def write_output(target, results) -> None:
@@ -156,7 +156,7 @@ def write_output(target, results) -> None:
     test_case = TestCase(f'{target}')
     test_case.name = f'{target}'
     if results['Results'] != ['No SSL/TLS Violations found.']:
-        test_case.result = Failure(results)
+        test_case.result = [Failure(results)]
     else:
         test_case.result = results
 
