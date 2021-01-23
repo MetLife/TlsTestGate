@@ -19,5 +19,5 @@
 - Added support for Python 3.9 with upgrade of SSLyze to 4.0.x
 - Added support for junitparser 2.0.0 (fixes breaking change)
 - Removed hardcoded python package configuration from tlstestgate.ts
-- Added tox tests for Python 3.6 and 3.9
+- Added tox tests for Python 3.9
 - Added pytest to validate junitparser functionality in scanner.py
