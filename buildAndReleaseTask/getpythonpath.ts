@@ -68,12 +68,6 @@ async function getSelfHostedPythonPath(): Promise<string> {
         const result: string = await pythonVer.execSync().stdout;
         console.log('PYTHON VERSION: ' + `${result}`);
 
-        // Python 3.7 or 3.8 is required, Python 3.9 is not supported at this time
-        if (result < '3.7' || result >= '3.9') {
-
-            throw new Error('Python 3.7 or 3.8 is required, Python 3.9 is not supported at this time.');
-        }
-
     } else {
         // Python3 not installed
         throw new Error('Python3 installation not found.');

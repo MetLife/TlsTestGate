@@ -76,10 +76,12 @@ async function run(): Promise<void> {
             packageSetup.arg('-m');
             packageSetup.arg('pip');
             packageSetup.arg('install');
-            packageSetup.arg('--upgrade');
-            packageSetup.arg('dnspython==2.0.0');
-            packageSetup.arg('junitparser');
-            packageSetup.arg('sslyze==3.1.0');
+            packageSetup.arg('-r');
+            packageSetup.arg(path.join(__dirname, 'requirements.txt'));
+            //packageSetup.arg('--upgrade');
+            //packageSetup.arg('dnspython==2.0.0');
+            //packageSetup.arg('junitparser==1.6.3');
+            //packageSetup.arg('sslyze==3.1.0');
             await packageSetup.exec();
             tl.setResult(tl.TaskResult.Succeeded, 'Python package install was successful.');
         
@@ -89,6 +91,7 @@ async function run(): Promise<void> {
         }
 
         try {
+
             // Run the scan and generate the results
             const scan: trm.ToolRunner = tl.tool(pyPath);
             scan.arg(path.join(__dirname, './python/scanner.py'));

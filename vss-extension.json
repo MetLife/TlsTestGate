@@ -4,7 +4,7 @@
     "name": "SSL/TLS Test Gate",
     "version": "1.0.0",
     "publisher": "gattjoe",
-    "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. This extension requires Python 3.7 or 3.8, Python 3.9 is not supported at this time.",
+    "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. Python 3.7 and above is required.",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
