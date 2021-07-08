@@ -124,4 +124,6 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/ResultsFile.xml'
         testRunTitle: 'Publish test results for getPythonPath.ts on MacOS'
+  - job: Foobar
+    steps:
     - task: ProvenanceGenerator@0
