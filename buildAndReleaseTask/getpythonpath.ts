@@ -45,7 +45,7 @@ export async function getPythonPath(): Promise<string> {
 
             return pythonPath;
 
-        } catch (err) {
+        } catch (err: any) {
 
             return err;
         }

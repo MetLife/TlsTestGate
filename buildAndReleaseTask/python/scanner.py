@@ -5,16 +5,18 @@ import os
 
 from dns import resolver
 from junitparser import TestCase, TestSuite, JUnitXml, Failure
-from sslyze import ServerNetworkLocationViaDirectConnection, \
-    ServerConnectivityTester, errors, ScanCommand, Scanner, \
-    ServerScanRequest
+from sslyze.plugins import scan_commands
+from sslyze.scanner.models import AllScanCommandsAttempts, ServerScanRequest
+from sslyze.scanner.scanner import Scanner
+from sslyze.server_setting import ServerNetworkLocation
+#from sslyze import errors
 
 # SSl 2.0/3.0 and TLS 1.0/1.1 are prohibited cipher suites
-CIPHER_SUITES = {ScanCommand.SSL_2_0_CIPHER_SUITES,
-                 ScanCommand.SSL_3_0_CIPHER_SUITES,
-                 ScanCommand.TLS_1_0_CIPHER_SUITES,
-                 ScanCommand.TLS_1_1_CIPHER_SUITES,
-                 ScanCommand.TLS_1_2_CIPHER_SUITES}
+CIPHER_SUITES = {scan_commands.ScanCommand.SSL_2_0_CIPHER_SUITES,
+                 scan_commands.ScanCommand.SSL_3_0_CIPHER_SUITES,
+                 scan_commands.ScanCommand.TLS_1_0_CIPHER_SUITES,
+                 scan_commands.ScanCommand.TLS_1_1_CIPHER_SUITES,
+                 scan_commands.ScanCommand.TLS_1_2_CIPHER_SUITES}
 
 # Currently, only The following TLS 1.2 ciphers are considered "strong"
 OK_TLS12_CIPHERS = {
@@ -101,40 +103,29 @@ def scan(dns_server: IpAddr, name: str, port: int) -> dict:
         scan_output["Results"].append(err.args[0])
         return scan_output
 
-    server_location = ServerNetworkLocationViaDirectConnection(name, port, target_ip)  # pylint: disable=too-many-function-args
-
-    # This line checks to see if the host is online
-    try:
-        server_info = ServerConnectivityTester().perform(server_location)
-
-    except errors.ConnectionToServerFailed as err:
-        # Could not connect to the server and port
-        scan_output["Results"].append(f"{err.error_message}")
-        return scan_output
-
+    #    server_info=server_info, scan_commands=CIPHER_SUITES)  # type: ignore
+    
+    server_location = ServerNetworkLocation(name, port, target_ip)  # pylint: disable=too-many-function-args
+    scan_request = [ServerScanRequest(server_location=server_location
+                                     ,scan_commands=CIPHER_SUITES)]
     scanner = Scanner()
-    # Ignore type error on get(key) as it defaults to None
-    # https://docs.python.org/3/library/stdtypes.html#dict.get
-    # We supply the values in the dict
-    server_scan_req = ServerScanRequest(
-        server_info=server_info, scan_commands=CIPHER_SUITES)  # type: ignore
-    scanner.queue_scan(server_scan_req)
+    scanner.queue_scans(scan_request)
 
     for results in scanner.get_results():
-        for suite in CIPHER_SUITES:
-            protocol = results.scan_commands_results[suite]
+        protocol = results.scan_result
+        scan_output["Results"].append(protocol)
 
-            for cipher in protocol.accepted_cipher_suites:
-                if protocol.tls_version_used.name == "TLS_1_2":
-                    if cipher.cipher_suite.name not in OK_TLS12_CIPHERS:
-                        scan_output["Results"].append({
-                            "Version": f"{protocol.tls_version_used.name}",
-                            "Cipher": f"{cipher.cipher_suite.name}"
-                            })
-                else:
-                    scan_output["Results"].append({"Version": f"{protocol.tls_version_used.name}",
-                                                   "Cipher": f"{cipher.cipher_suite.name}"})
-
+            #for cipher in protocol.accepted_cipher_suites:
+            #    if protocol.tls_version_used.name == "TLS_1_2":
+            #        if cipher.cipher_suite.name not in OK_TLS12_CIPHERS:
+            #            scan_output["Results"].append({
+            #                "Version": f"{protocol.tls_version_used.name}",
+            #                "Cipher": f"{cipher.cipher_suite.name}"
+            #                })
+            #    else:
+            #        scan_output["Results"].append({"Version": f"{protocol.tls_version_used.name}",
+            #                                       "Cipher": f"{cipher.cipher_suite.name}"})
+            
     if len(scan_output["Results"]) == 0:
         scan_output["Results"].append("No SSL/TLS Violations found.")
 

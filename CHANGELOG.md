@@ -21,3 +21,8 @@
 - Removed hardcoded python package configuration from tlstestgate.ts
 - Added tox tests for Python 3.9
 - Added pytest to validate junitparser functionality in scanner.py
+
+# v1.4.0
+- Updated to SSLyze 5.0.0
+- Changed minimum Azure Pipeline Agent version to 2.144.0 in support of Node10
+- Updated azure-pipelines-task-lib and azure-pipelines-tool-lib to latest version

@@ -65,7 +65,7 @@ async function run(): Promise<void> {
             await pythonsetup.exec();
             tl.setResult(tl.TaskResult.Succeeded, 'python setup was successful.');
 
-        } catch (err) {
+        } catch (err: any) {
 
             return tl.setResult(tl.TaskResult.Failed, 'python setup failed.');
         }
@@ -112,7 +112,7 @@ async function run(): Promise<void> {
 
         }
 
-    } catch (err) {
+    } catch (err: any) {
         tl.error(err.message);
         tl.setResult(tl.TaskResult.Failed, tl.loc('taskFailed', err.message));
 
