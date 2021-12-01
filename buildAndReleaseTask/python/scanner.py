@@ -6,10 +6,10 @@ import os
 from dns import resolver
 from junitparser import TestCase, TestSuite, JUnitXml, Failure
 from sslyze.plugins import scan_commands
-from sslyze.scanner.models import AllScanCommandsAttempts, ServerScanRequest
+from sslyze.scanner.models import ServerScanRequest, get_scan_command_attempt_cls
 from sslyze.scanner.scanner import Scanner
+from sslyze.scanner.scan_command_attempt import ScanCommandAttemptStatusEnum
 from sslyze.server_setting import ServerNetworkLocation
-#from sslyze import errors
 
 # SSl 2.0/3.0 and TLS 1.0/1.1 are prohibited cipher suites
 CIPHER_SUITES = {scan_commands.ScanCommand.SSL_2_0_CIPHER_SUITES,
@@ -112,10 +112,18 @@ def scan(dns_server: IpAddr, name: str, port: int) -> dict:
     scanner.queue_scans(scan_request)
 
     for results in scanner.get_results():
-        protocol = results.scan_result
-        scan_output["Results"].append(protocol)
-
-            #for cipher in protocol.accepted_cipher_suites:
+        print(results.scan_result[0])
+        ssl2_attempt = results.scan_result.tls_1_2_cipher_suites 
+        if ssl2_attempt.status == ScanCommandAttemptStatusEnum.ERROR:
+            # An error happened when this scan command was run
+            print("SSL2 fail")
+        elif ssl2_attempt.status == ScanCommandAttemptStatusEnum.COMPLETED:
+            # This scan command was run successfully
+            ssl2_result = ssl2_attempt.result
+            if len(ssl2_result.accepted_cipher_suites) > 0:
+                for accepted_cipher_suite in ssl2_result.accepted_cipher_suites:
+                    print(accepted_cipher_suite.cipher_suite.name)
+            
             #    if protocol.tls_version_used.name == "TLS_1_2":
             #        if cipher.cipher_suite.name not in OK_TLS12_CIPHERS:
             #            scan_output["Results"].append({
@@ -173,15 +181,17 @@ def main() -> None:
         decision = "true"
 
     scan_results = scan(dns, target, arg_port)
-    write_output(target, scan_results)
 
-    output = os.path.normpath(os.path.abspath(os.path.expanduser(os.path.expandvars("test-output.xml"))))
+    print(scan_results)
+    #write_output(target, scan_results)
+
+    #output = os.path.normpath(os.path.abspath(os.path.expanduser(os.path.expandvars("test-output.xml"))))
 
     # Borrowed from pytest-azurepipelines
     # https://github.com/tonybaloney/pytest-azurepipelines/blob/master/pytest_azurepipelines.py
-    print(
-        f"##vso[results.publish type=JUnit;runTitle='TlsTestGate';failTaskOnFailedTests={decision};publishRunAttachments=false;]{output}"
-    )
+    #print(
+    #    f"##vso[results.publish type=JUnit;runTitle='TlsTestGate';failTaskOnFailedTests={decision};publishRunAttachments=false;]{output}"
+    #)
 
 
 if __name__ == "__main__":
