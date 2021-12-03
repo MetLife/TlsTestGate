@@ -12,7 +12,7 @@ describe('getPythonPath.ts tests', function() {
 
       const pythonPath: string = await getPythonPath();
       console.log('pythonPath: ' + pythonPath);
-      expect(pythonPath).to.include('python3');
+      expect(pythonPath).to.include('python');
 
     });
   });
