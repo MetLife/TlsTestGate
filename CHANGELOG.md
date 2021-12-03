@@ -23,6 +23,9 @@
 - Added pytest to validate junitparser functionality in scanner.py
 
 # v1.4.0
+- Created docker development environment in VS Code to work around M1 compatibility issues with SSLyze/NaSSL
 - Updated to SSLyze 5.0.0
 - Changed minimum Azure Pipeline Agent version to 2.144.0 in support of Node10
 - Updated azure-pipelines-task-lib and azure-pipelines-tool-lib to latest version
+- Formatted python files with black and linted with pylint
+- Fixed test case that purposely failed resolving bbbbbbbbbbbbbbb.com because someone out there is now using it

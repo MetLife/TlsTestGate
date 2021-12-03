@@ -5,18 +5,23 @@ import os
 
 from dns import resolver
 from junitparser import TestCase, TestSuite, JUnitXml, Failure
+from sslyze.errors import ConnectionToServerFailed
 from sslyze.plugins import scan_commands
-from sslyze.scanner.models import ServerScanRequest, get_scan_command_attempt_cls
+from sslyze.plugins.openssl_cipher_suites.implementation import CipherSuitesScanResult
+from sslyze.scanner.models import ServerScanRequest, ServerScanStatusEnum
 from sslyze.scanner.scanner import Scanner
 from sslyze.scanner.scan_command_attempt import ScanCommandAttemptStatusEnum
 from sslyze.server_setting import ServerNetworkLocation
 
+
 # SSl 2.0/3.0 and TLS 1.0/1.1 are prohibited cipher suites
-CIPHER_SUITES = {scan_commands.ScanCommand.SSL_2_0_CIPHER_SUITES,
-                 scan_commands.ScanCommand.SSL_3_0_CIPHER_SUITES,
-                 scan_commands.ScanCommand.TLS_1_0_CIPHER_SUITES,
-                 scan_commands.ScanCommand.TLS_1_1_CIPHER_SUITES,
-                 scan_commands.ScanCommand.TLS_1_2_CIPHER_SUITES}
+CIPHER_SUITES = {
+    scan_commands.ScanCommand.SSL_2_0_CIPHER_SUITES,
+    scan_commands.ScanCommand.SSL_3_0_CIPHER_SUITES,
+    scan_commands.ScanCommand.TLS_1_0_CIPHER_SUITES,
+    scan_commands.ScanCommand.TLS_1_1_CIPHER_SUITES,
+    scan_commands.ScanCommand.TLS_1_2_CIPHER_SUITES,
+}
 
 # Currently, only The following TLS 1.2 ciphers are considered "strong"
 OK_TLS12_CIPHERS = {
@@ -28,32 +33,58 @@ OK_TLS12_CIPHERS = {
     "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
     "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
     "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
-    "TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
+    "TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
 }
 
 # Create the parser
 arg_parser = argparse.ArgumentParser(prog="scanner")
 
 # Add the arguments
-arg_parser.add_argument("--target", "-t", metavar="target", type=str,
-                        required=True, help='The target to test')
+arg_parser.add_argument(
+    "--target",
+    "-t",
+    metavar="target",
+    type=str,
+    required=True,
+    help="The target to test",
+)
 
-arg_parser.add_argument("--dns", '-d', metavar="dnsserver", type=str,
-                        required=True, help="The DNS server to use")
+arg_parser.add_argument(
+    "--dns",
+    "-d",
+    metavar="dnsserver",
+    type=str,
+    required=True,
+    help="The DNS server to use",
+)
 
-arg_parser.add_argument("--port", "-p", metavar="port", type=int,
-                        required=False, default=443, help='The port to test (default is 443)')
+arg_parser.add_argument(
+    "--port",
+    "-p",
+    metavar="port",
+    type=int,
+    required=False,
+    default=443,
+    help="The port to test (default is 443)",
+)
 
-arg_parser.add_argument("--decision", metavar="decision", type=str,
-                        required=True, default="pass", choices=["fail", "pass"],
-                        help='Fail task if there are test failures?')
+arg_parser.add_argument(
+    "--decision",
+    metavar="decision",
+    type=str,
+    required=True,
+    default="pass",
+    choices=["fail", "pass"],
+    help="Fail task if there are test failures?",
+)
 
 # Alias str type to better reflect the intented type and value
 FQDN = str
 IpAddr = str
 
+
 def resolve_dnsname_to_ip(dns_server: IpAddr, dnsname: FQDN) -> IpAddr:
-    """ Resolve dns name and return IP """
+    """Resolve dns name and return IP"""
     ip_list = []  # results
 
     # dnspython config
@@ -88,7 +119,7 @@ def resolve_dnsname_to_ip(dns_server: IpAddr, dnsname: FQDN) -> IpAddr:
 
 
 def scan(dns_server: IpAddr, name: str, port: int) -> dict:
-    """ Three inputs: DNS server, web site name, and ip """
+    """Three inputs: DNS server, web site name, and ip"""
 
     scan_output = new_results()
     scan_output["Hostname"] = name
@@ -103,37 +134,66 @@ def scan(dns_server: IpAddr, name: str, port: int) -> dict:
         scan_output["Results"].append(err.args[0])
         return scan_output
 
-    #    server_info=server_info, scan_commands=CIPHER_SUITES)  # type: ignore
-    
-    server_location = ServerNetworkLocation(name, port, target_ip)  # pylint: disable=too-many-function-args
-    scan_request = [ServerScanRequest(server_location=server_location
-                                     ,scan_commands=CIPHER_SUITES)]
+    server_location = ServerNetworkLocation(name, port, target_ip)
+    try:
+        # pylint: disable=too-many-function-args
+        scan_request = [
+            ServerScanRequest(
+                server_location=server_location, scan_commands=CIPHER_SUITES
+            )
+        ]
+    except ConnectionToServerFailed as err:
+        scan_output["Results"].append(err.args[0])
+        return scan_output
+
     scanner = Scanner()
     scanner.queue_scans(scan_request)
 
     for results in scanner.get_results():
-        print(results.scan_result[0])
-        ssl2_attempt = results.scan_result.tls_1_2_cipher_suites 
-        if ssl2_attempt.status == ScanCommandAttemptStatusEnum.ERROR:
-            # An error happened when this scan command was run
-            print("SSL2 fail")
-        elif ssl2_attempt.status == ScanCommandAttemptStatusEnum.COMPLETED:
-            # This scan command was run successfully
-            ssl2_result = ssl2_attempt.result
-            if len(ssl2_result.accepted_cipher_suites) > 0:
-                for accepted_cipher_suite in ssl2_result.accepted_cipher_suites:
-                    print(accepted_cipher_suite.cipher_suite.name)
-            
-            #    if protocol.tls_version_used.name == "TLS_1_2":
-            #        if cipher.cipher_suite.name not in OK_TLS12_CIPHERS:
-            #            scan_output["Results"].append({
-            #                "Version": f"{protocol.tls_version_used.name}",
-            #                "Cipher": f"{cipher.cipher_suite.name}"
-            #                })
-            #    else:
-            #        scan_output["Results"].append({"Version": f"{protocol.tls_version_used.name}",
-            #                                       "Cipher": f"{cipher.cipher_suite.name}"})
-            
+        if results.scan_status == ServerScanStatusEnum.ERROR_NO_CONNECTIVITY:
+            scan_output["Results"].append(f"Error: Could not connect to {name}:{port}")
+            return scan_output
+
+        for suite in CIPHER_SUITES:
+            tlsscanresult: CipherSuitesScanResult = getattr(
+                results.scan_result, suite
+            ).result
+            tlsscanstatus = getattr(results.scan_result, suite).status
+            if tlsscanresult.is_tls_version_supported:
+                if tlsscanstatus == ScanCommandAttemptStatusEnum.ERROR:
+                    scan_output["Results"].append(
+                        {
+                            "Version": f"{cipher_version}",
+                            "Cipher": f"Error during scan of {cipher_version}",
+                        }
+                    )
+                else:
+                    cipher_version: str = tlsscanresult.tls_version_used.name
+                    if cipher_version == "TLS_1_2":
+                        for (
+                            accepted_cipher_suite
+                        ) in tlsscanresult.accepted_cipher_suites:
+                            if (
+                                accepted_cipher_suite.cipher_suite.name
+                                not in OK_TLS12_CIPHERS
+                            ):
+                                scan_output["Results"].append(
+                                    {
+                                        "Version": f"{cipher_version}",
+                                        "Cipher": f"{accepted_cipher_suite.cipher_suite.name}",
+                                    }
+                                )
+                    else:
+                        for (
+                            accepted_cipher_suite
+                        ) in tlsscanresult.accepted_cipher_suites:
+                            scan_output["Results"].append(
+                                {
+                                    "Version": f"{cipher_version}",
+                                    "Cipher": f"{accepted_cipher_suite.cipher_suite.name}",
+                                }
+                            )
+
     if len(scan_output["Results"]) == 0:
         scan_output["Results"].append("No SSL/TLS Violations found.")
 
@@ -141,20 +201,17 @@ def scan(dns_server: IpAddr, name: str, port: int) -> dict:
 
 
 def new_results() -> dict:
-    """ Create the results dict """
+    """Create the results dict"""
 
-    return {"Hostname":     None,
-            "IP":           None,
-            "DNS":          None,
-            "Results":      []}
+    return {"Hostname": None, "IP": None, "DNS": None, "Results": []}
 
 
 def write_output(target, results) -> None:
-    """ Write scan results in junitxml format """
+    """Write scan results in junitxml format"""
 
-    test_case = TestCase(f'{target}')
-    test_case.name = f'{target}'
-    if results['Results'] != ['No SSL/TLS Violations found.']:
+    test_case = TestCase(f"{target}")
+    test_case.name = f"{target}"
+    if results["Results"] != ["No SSL/TLS Violations found."]:
         test_case.result = [Failure(results)]
     else:
         test_case.result = results
@@ -164,12 +221,12 @@ def write_output(target, results) -> None:
 
     xml = JUnitXml()
     xml.add_testsuite(suite)
-    xml.write('test-output.xml')
+    xml.write("test-output.xml")
 
 
 def main() -> None:
 
-    """ Main function """
+    """Main function"""
     # Execute the parse_args() method
     args = arg_parser.parse_args()
     target = args.target
@@ -182,16 +239,17 @@ def main() -> None:
 
     scan_results = scan(dns, target, arg_port)
 
-    print(scan_results)
-    #write_output(target, scan_results)
+    write_output(target, scan_results)
 
-    #output = os.path.normpath(os.path.abspath(os.path.expanduser(os.path.expandvars("test-output.xml"))))
+    output = os.path.normpath(
+        os.path.abspath(os.path.expanduser(os.path.expandvars("test-output.xml")))
+    )
 
     # Borrowed from pytest-azurepipelines
     # https://github.com/tonybaloney/pytest-azurepipelines/blob/master/pytest_azurepipelines.py
-    #print(
-    #    f"##vso[results.publish type=JUnit;runTitle='TlsTestGate';failTaskOnFailedTests={decision};publishRunAttachments=false;]{output}"
-    #)
+    print(
+        f"##vso[results.publish type=JUnit;runTitle='TlsTestGate';failTaskOnFailedTests={decision};publishRunAttachments=false;]{output}"  # pylint: disable=line-too-long
+    )
 
 
 if __name__ == "__main__":
