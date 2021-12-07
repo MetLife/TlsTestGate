@@ -1,3 +1,5 @@
 dnspython==2.1.0
-junitparser==2.0.0
-sslyze==4.0.1
+junitparser==2.2.0
+sslyze==5.0.0
+black==21.11b1
+pylint==2.12.1

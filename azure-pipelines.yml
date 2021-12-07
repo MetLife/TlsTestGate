@@ -91,7 +91,8 @@ stages:
         command: 'custom'
         workingDir: buildAndReleaseTask
         customCommand: 'test'
-        verbose: false
+        verbose: true
+
 
     - task: PublishTestResults@2
       inputs:
