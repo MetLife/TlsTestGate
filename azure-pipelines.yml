@@ -62,7 +62,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm install chai mocha ts-node'
+        customCommand: 'install chai mocha ts-node'
         verbose: false
 
     - task: Npm@1
@@ -96,7 +96,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm install chai mocha ts-node'
+        customCommand: 'install chai mocha ts-node'
         verbose: false
 
     - task: Npm@1
@@ -131,7 +131,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm install chai mocha ts-node'
+        customCommand: 'install chai mocha ts-node'
         verbose: false
 
     - task: Npm@1
