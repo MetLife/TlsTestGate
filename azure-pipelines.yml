@@ -58,7 +58,15 @@ stages:
 
     steps:
     - task: Npm@1
-      displayName: 'npm install'
+      displayName: 'npm install base tools'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm install chai mocha ts-node'
+        verbose: false
+
+    - task: Npm@1
+      displayName: 'npm install TlsTestGate'
       inputs:
         workingDir: buildAndReleaseTask
         verbose: false
@@ -83,6 +91,14 @@ stages:
       demands: npm
 
     steps:
+    - task: Npm@1
+      displayName: 'npm install base tools'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm install chai mocha ts-node'
+        verbose: false
+
     - task: Npm@1
       displayName: 'npm install'
       inputs:
@@ -110,6 +126,14 @@ stages:
       demands: npm
 
     steps:
+    - task: Npm@1
+      displayName: 'npm install base tools'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm install chai mocha ts-node'
+        verbose: false
+
     - task: Npm@1
       displayName: 'npm install'
       inputs:
