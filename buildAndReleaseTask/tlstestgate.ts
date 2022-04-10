@@ -9,7 +9,7 @@
 
 import * as tl from 'azure-pipelines-task-lib/task';
 import * as trm from 'azure-pipelines-task-lib/toolrunner';
-import * as isIp from 'is-ip';
+import * as net from 'net';
 import * as path from 'path';
 import * as url from 'url';
 import { getPythonPath } from './getpythonpath';
@@ -44,7 +44,7 @@ async function run(): Promise<void> {
         }
 
         // Validate the DNS server formatting
-        if (!isIp.v4(dnsserver)) {
+        if (!net.isIPv4(dnsserver)) {
             throw new Error(tl.loc('dnsserverNotValid'));
         }
 
