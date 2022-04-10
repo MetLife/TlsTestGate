@@ -1,7 +1,9 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Tests
+#   Python: 
+#     Ensure scanner is working on Python 3.7 - 3.10 
+#   Node:
+#     Ensure getPythonPath.ts functionality is working
+
 
 stages:
 - stage: 'Python_Tests'
@@ -18,6 +20,8 @@ stages:
           python.version: '3.8'
         Python39:
           python.version: '3.9'
+        Python310:
+          python.version: '3.10'
 
     steps:
     - task: UsePythonVersion@0
