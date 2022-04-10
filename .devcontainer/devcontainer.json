@@ -18,7 +18,8 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": ["ms-python.vscode-pylance",
 				   "visualstudioexptteam.vscodeintellicode",
-				   "ms-azuretools.vscode-docker"],
+				   "ms-azuretools.vscode-docker",
+				   "eamodio.gitlens"],
 
 
 	// Uncomment the next line to run commands after the container is created - for example installing curl.

@@ -29,3 +29,6 @@
 - Updated azure-pipelines-task-lib and azure-pipelines-tool-lib to latest version
 - Formatted python files with black and linted with pylint
 - Fixed test case that purposely failed resolving bbbbbbbbbbbbbbb.com because someone out there is now using it
+
+# v1.5.0
+- Removed chai, mocha, tfx-cli, ts-node, and typescript from dev-dependencies and moved install into Dockerfile

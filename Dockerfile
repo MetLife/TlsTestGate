@@ -41,6 +41,7 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 # Install TlsTestGate Packages
 COPY --chown=tlstestgate:tlstestgate . /home/tlstestgate/TlsTestGate/
 RUN cd TlsTestGate/buildAndReleaseTask && npm install
+RUN cd TlsTestGate/buildAndReleaseTask && npm install chai mocha tfx-cli ts-node typescript
 RUN cd TlsTestGate && pip install --no-cache-dir --quiet -r requirements.txt
 
 CMD [ "bash" ]
