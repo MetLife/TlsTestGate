@@ -62,7 +62,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'install chai mocha ts-node'
+        customCommand: 'install chai mocha ts-node eslint'
         verbose: false
 
     - task: Npm@1
@@ -77,6 +77,14 @@ stages:
         command: 'custom'
         workingDir: buildAndReleaseTask
         customCommand: 'test'
+        verbose: false
+    
+    - task: Npm@1
+      displayName: 'eslint'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm run lint'
         verbose: false
 
     - task: PublishTestResults@2
@@ -96,7 +104,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'install chai mocha ts-node'
+        customCommand: 'install chai mocha ts-node eslint'
         verbose: false
 
     - task: Npm@1
@@ -113,6 +121,13 @@ stages:
         customCommand: 'test'
         verbose: true
 
+    - task: Npm@1
+      displayName: 'eslint'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm run lint'
+        verbose: false
 
     - task: PublishTestResults@2
       inputs:
@@ -131,7 +146,7 @@ stages:
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'install chai mocha ts-node'
+        customCommand: 'install chai mocha ts-node eslint'
         verbose: false
 
     - task: Npm@1
@@ -146,6 +161,14 @@ stages:
         command: 'custom'
         workingDir: buildAndReleaseTask
         customCommand: 'test'
+        verbose: false
+
+    - task: Npm@1
+      displayName: 'eslint'
+      inputs:
+        command: 'custom'
+        workingDir: buildAndReleaseTask
+        customCommand: 'npm run lint'
         verbose: false
 
     - task: PublishTestResults@2

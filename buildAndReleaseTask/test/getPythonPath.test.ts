@@ -1,6 +1,6 @@
 import { getPythonPath } from '../getpythonpath';
 import 'mocha';
-const chai = require('chai');
+const chai = require('chai'); // eslint-disable-line @typescript-eslint/no-var-requires
 const expect = chai.expect;
 
 describe('getPythonPath.ts tests', function() {

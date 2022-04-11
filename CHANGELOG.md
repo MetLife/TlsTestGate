@@ -30,5 +30,9 @@
 - Formatted python files with black and linted with pylint
 - Fixed test case that purposely failed resolving bbbbbbbbbbbbbbb.com because someone out there is now using it
 
-# v1.5.0
+# v1.10.0
+- version number blurb
 - Removed chai, mocha, tfx-cli, ts-node, and typescript from dev-dependencies and moved install into Dockerfile
+- Updated SSLyze to 5.0.3 for Python 3.10 support
+- Removed is-Ip TypeScript dependency
+- Fixed test case that purposely failed resolving bbbbbbbbbbbbbbbbbbbbbbbbb.com because someone out there is now using it

@@ -4,7 +4,8 @@
   "description": "Build/Release Task to test for non-compliant SSL/TLS settings on public or internal endpoints. Python 3.7 and above is required.",
   "main": "tlstestgate.js",
   "scripts": {
-    "test": "mocha -r ts-node/register test/*.ts --reporter xunit --reporter-option output=ResultsFile.xml"
+    "test": "mocha -r ts-node/register test/*.ts --reporter xunit --reporter-option output=ResultsFile.xml",
+    "lint": "eslint -c .eslintrc.js --ext .ts ."
   },
   "author": "Joe Gatt",
   "license": "Apache-2.0",
@@ -15,6 +16,8 @@
   "devDependencies": {
     "@types/mocha": "^8.2.3",
     "@types/node": "^14.18.12",
-    "@types/q": "^1.5.5"
+    "@types/q": "^1.5.5",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0"
   }
 }
