@@ -30,9 +30,10 @@
 - Formatted python files with black and linted with pylint
 - Fixed test case that purposely failed resolving bbbbbbbbbbbbbbb.com because someone out there is now using it
 
-# v1.10.0
-- version number blurb
+# v1.0.10
+- Align changelog version scheme with Azure DevOps Marketplace
 - Removed chai, mocha, tfx-cli, ts-node, and typescript from dev-dependencies and moved install into Dockerfile
+- Added eslint to project and pipelines
 - Updated SSLyze to 5.0.3 for Python 3.10 support
 - Removed is-Ip TypeScript dependency
 - Fixed test case that purposely failed resolving bbbbbbbbbbbbbbbbbbbbbbbbb.com because someone out there is now using it
