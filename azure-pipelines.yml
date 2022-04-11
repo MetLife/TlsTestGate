@@ -80,11 +80,11 @@ stages:
         verbose: false
     
     - task: Npm@1
-      displayName: 'eslint'
+      displayName: 'run eslint'
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm run lint'
+        customCommand: 'run lint'
         verbose: false
 
     - task: PublishTestResults@2
@@ -122,11 +122,11 @@ stages:
         verbose: true
 
     - task: Npm@1
-      displayName: 'eslint'
+      displayName: 'run eslint'
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm run lint'
+        customCommand: 'run lint'
         verbose: false
 
     - task: PublishTestResults@2
@@ -164,11 +164,11 @@ stages:
         verbose: false
 
     - task: Npm@1
-      displayName: 'eslint'
+      displayName: 'run eslint'
       inputs:
         command: 'custom'
         workingDir: buildAndReleaseTask
-        customCommand: 'npm run lint'
+        customCommand: 'run lint'
         verbose: false
 
     - task: PublishTestResults@2
