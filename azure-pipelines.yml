@@ -78,14 +78,6 @@ stages:
         workingDir: buildAndReleaseTask
         customCommand: 'test'
         verbose: false
-    
-    - task: Npm@1
-      displayName: 'run eslint'
-      inputs:
-        command: 'custom'
-        workingDir: buildAndReleaseTask
-        customCommand: 'run lint'
-        verbose: false
 
     - task: PublishTestResults@2
       inputs:
@@ -121,14 +113,6 @@ stages:
         customCommand: 'test'
         verbose: true
 
-    - task: Npm@1
-      displayName: 'run eslint'
-      inputs:
-        command: 'custom'
-        workingDir: buildAndReleaseTask
-        customCommand: 'run lint'
-        verbose: false
-
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit'
@@ -161,14 +145,6 @@ stages:
         command: 'custom'
         workingDir: buildAndReleaseTask
         customCommand: 'test'
-        verbose: false
-
-    - task: Npm@1
-      displayName: 'run eslint'
-      inputs:
-        command: 'custom'
-        workingDir: buildAndReleaseTask
-        customCommand: 'run lint'
         verbose: false
 
     - task: PublishTestResults@2

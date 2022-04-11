@@ -5,7 +5,7 @@
   "main": "tlstestgate.js",
   "scripts": {
     "test": "mocha -r ts-node/register test/*.ts --reporter xunit --reporter-option output=ResultsFile.xml",
-    "lint": "eslint -c buildAndReleaseTask/.eslintrc.js --ext .ts ."
+    "lint": "eslint -c .eslintrc.js --ext .ts ."
   },
   "author": "Joe Gatt",
   "license": "Apache-2.0",
