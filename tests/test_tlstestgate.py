@@ -68,7 +68,7 @@ def test_external_dns_name_not_exist():
 def test_sslyze_timeout():
     """Test sslyze timeout"""
 
-    bad_dns_domain = "bbbbbbbbbbbbbbbbbbbbbbbbb.com"
+    bad_dns_domain = "bbbbbbbbbbbbbbbbbbbbbbbbbb.com"
     results = scan(DNS_SERVER, bad_dns_domain, 443)
 
     # Check the output to ensure the DNS name could not resolve

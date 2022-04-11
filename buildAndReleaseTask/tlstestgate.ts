@@ -1,4 +1,3 @@
-/* tslint:disable:linebreak-style no-unsafe-any no-submodule-imports no-relative-imports no-console */
 /**
  * There are four parts to the extension: Base URL, port, DNS server, and decision
  * @baseURL - url to scan.
@@ -9,7 +8,7 @@
 
 import * as tl from 'azure-pipelines-task-lib/task';
 import * as trm from 'azure-pipelines-task-lib/toolrunner';
-import * as isIp from 'is-ip';
+import * as net from 'net';
 import * as path from 'path';
 import * as url from 'url';
 import { getPythonPath } from './getpythonpath';
@@ -44,7 +43,7 @@ async function run(): Promise<void> {
         }
 
         // Validate the DNS server formatting
-        if (!isIp.v4(dnsserver)) {
+        if (!net.isIPv4(dnsserver)) {
             throw new Error(tl.loc('dnsserverNotValid'));
         }
 
@@ -65,7 +64,7 @@ async function run(): Promise<void> {
             await pythonsetup.exec();
             tl.setResult(tl.TaskResult.Succeeded, 'python setup was successful.');
 
-        } catch (err: any) {
+        } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
 
             return tl.setResult(tl.TaskResult.Failed, 'python setup failed.');
         }
@@ -78,10 +77,6 @@ async function run(): Promise<void> {
             packageSetup.arg('install');
             packageSetup.arg('-r');
             packageSetup.arg(path.join(__dirname, 'requirements.txt'));
-            //packageSetup.arg('--upgrade');
-            //packageSetup.arg('dnspython==2.0.0');
-            //packageSetup.arg('junitparser==1.6.3');
-            //packageSetup.arg('sslyze==3.1.0');
             await packageSetup.exec();
             tl.setResult(tl.TaskResult.Succeeded, 'Python package install was successful.');
         
@@ -112,7 +107,7 @@ async function run(): Promise<void> {
 
         }
 
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
         tl.error(err.message);
         tl.setResult(tl.TaskResult.Failed, tl.loc('taskFailed', err.message));
 

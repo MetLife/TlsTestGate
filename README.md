@@ -90,7 +90,6 @@ cd buildAndReleaseTask
 npm init
 npm install azure-pipelines-task-lib
 npm install azure-pipelines-tool-lib
-npm install is-ip
 npm install @types/node --save-dev
 npm install @types/q --save-dev
 ```
@@ -107,7 +106,7 @@ cd buildAndReleaseTask
 export INPUT_BASEURL = github.com
 export INPUT_PORT = 443
 export INPUT_DNSSERVER = 8.8.8.8
-export INPUT_DECISION = false
+export INPUT_FAILBUILD = false
 node tlstestgate.js
 ```
 
