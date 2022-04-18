@@ -37,3 +37,6 @@
 - Updated SSLyze to 5.0.3 for Python 3.10 support
 - Removed is-Ip TypeScript dependency
 - Fixed test case that purposely failed resolving bbbbbbbbbbbbbbbbbbbbbbbbb.com because someone out there is now using it
+
+# v1.0.11
+- Fix yaml example on Visual Studio marketplace

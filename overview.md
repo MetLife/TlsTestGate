@@ -40,13 +40,13 @@ Below is sample YAML to insert into your build or release pipeline.
 
 ```
 steps:
-- task: JoeGatt.TlsTestGate.custom-build-release-task.TlsTestGate@1
+- task: TlsTestGate@1
   displayName: 'github.com SSL/TLS Test Gate'
   inputs:
-    baseURL: github.com
-    port: 443
-    dnsserver: 8.8.8.8
-    decision: true
+   baseURL: 'github.com'
+   dnsserver: 8.8.8.8
+   port: 443
+   failBuild: false
 ```
 
 ## Results
