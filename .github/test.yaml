@@ -1,0 +1,36 @@
+name: TlsTestGate-Test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, 3.10, 3.11]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install tools
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+      - name: Install tox
+        run: |
+          python -m pip install tox
+      - name: Run tox
+        run: |
+          tox -e py
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: pytest-results for ${{ matrix.python-version }}
+          path: "**/test-output.xml"
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: pytest-results for ${{ matrix.python-version }}
+          path: "**/coverage.xml"
+        if: ${{ always() }}

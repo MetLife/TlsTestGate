@@ -45,4 +45,4 @@
 - Updated all npm and python dependencies
 - Added dependabot
 - Added Microsoft Typescript security linters
-- Removed deprecated node api call
+- Removed deprecated node api call (url.parse)

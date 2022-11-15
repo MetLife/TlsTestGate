@@ -3,7 +3,7 @@
     "id": "47ba6c2e-d5c2-44e7-bd91-5792159eb4eb",
     "name": "TlsTestGate",
     "friendlyName": "SSL/TLS Test Gate",
-    "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. This extension requires Python 3.7 or 3.8, Python 3.9 is not supported at this time.",
+    "description": "Test public or internal endpoints for non-compliant SSL/TLS settings. This extension requires Python 3.7 through 3.10, Python 3.11 is not supported at this time.",
     "helpMarkDown": "Email gattjoseph@hotmail.com for support.",
     "category": "Azure Pipelines",
     "author": "Joe Gatt",
