@@ -3,7 +3,7 @@
  */
 
 import { exist, which, tool as tool_1 } from 'azure-pipelines-task-lib/task';
-import * as trm from 'azure-pipelines-task-lib/toolrunner';
+import type trm from 'azure-pipelines-task-lib/toolrunner';
 import * as tool from 'azure-pipelines-tool-lib/tool';
 import * as path from 'path';
 
@@ -15,7 +15,7 @@ export async function getPythonPath(): Promise<string> {
     if (exist('C:/hostedtoolcache/windows')) {
         // Windows
         console.log('AGENT: Extension running on a Microsoft hosted Agent.');
-        const baseDir: string = tool.findLocalTool('python', '3.8');
+        const baseDir: string = tool.findLocalTool('python', '3.9');
         const pythonPath: string = path.join(baseDir, 'python.exe');
 
         return pythonPath;
@@ -23,7 +23,7 @@ export async function getPythonPath(): Promise<string> {
     } else if (exist('/opt/hostedtoolcache')) {
         // Linux
         console.log('AGENT: Extension running on a Microsoft hosted Agent.');
-        const baseDir: string = tool.findLocalTool('Python', '3.8');
+        const baseDir: string = tool.findLocalTool('Python', '3.9');
         const pythonPath: string = path.join(baseDir, '/bin/python3');
 
         return pythonPath;
@@ -31,7 +31,7 @@ export async function getPythonPath(): Promise<string> {
     } else if (exist('/Users/runner/hostedtoolcache')) {
         // OS X
         console.log('AGENT: Extension running on a Microsoft hosted Agent.');
-        const baseDir: string = tool.findLocalTool('Python', '3.8');
+        const baseDir: string = tool.findLocalTool('Python', '3.9');
         const pythonPath: string = path.join(baseDir, '/bin/python3');
 
         return pythonPath;
