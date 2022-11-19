@@ -40,3 +40,9 @@
 
 # v1.0.11
 - Fix yaml example on Visual Studio marketplace
+
+# v1.0.12
+- Updated all npm and python dependencies
+- Added dependabot
+- Added Microsoft Typescript security linters
+- Removed deprecated node api call (url.parse)

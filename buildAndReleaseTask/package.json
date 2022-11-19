@@ -4,20 +4,25 @@
   "description": "Build/Release Task to test for non-compliant SSL/TLS settings on public or internal endpoints. Python 3.7 and above is required.",
   "main": "tlstestgate.js",
   "scripts": {
+    "build": "tsc",
     "test": "mocha -r ts-node/register test/*.ts --reporter xunit --reporter-option output=ResultsFile.xml",
-    "lint": "eslint -c .eslintrc.js --ext .ts ."
+    "lint": "eslint . --ext .ts -c .eslintrc.json"
   },
   "author": "Joe Gatt",
   "license": "Apache-2.0",
   "dependencies": {
-    "azure-pipelines-task-lib": "^3.2.0",
-    "azure-pipelines-tool-lib": "^1.3.0"
+    "azure-pipelines-task-lib": "4.0.1-preview",
+    "azure-pipelines-tool-lib": "2.0.0-preview"
   },
   "devDependencies": {
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-security": "1.5.0",
+    "@microsoft/eslint-plugin-sdl": "0.2.0",
+    "@tsconfig/node16-strictest": "1.0.3",
     "@types/mocha": "^8.2.3",
-    "@types/node": "^14.18.12",
-    "@types/q": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^5.18.0",
-    "@typescript-eslint/parser": "^5.18.0"
+    "@types/node": "16.11.49",
+    "@types/q": "1.5.5",
+    "@typescript-eslint/eslint-plugin": "5.36.1",
+    "@typescript-eslint/parser": "5.36.1"
   }
 }

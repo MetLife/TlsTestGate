@@ -7,10 +7,9 @@
  */
 
 import * as tl from 'azure-pipelines-task-lib/task';
-import * as trm from 'azure-pipelines-task-lib/toolrunner';
+import type trm from 'azure-pipelines-task-lib/toolrunner';
 import * as net from 'net';
 import * as path from 'path';
-import * as url from 'url';
 import { getPythonPath } from './getpythonpath';
 
 async function run(): Promise<void> {
@@ -33,7 +32,7 @@ async function run(): Promise<void> {
         // Check targetdomain formatting
         let hostname: string | null = baseURL;
         if (hostname.startsWith('http')) {
-            const myURL: url.UrlWithStringQuery = url.parse(hostname);
+            const myURL = new URL(hostname);
             hostname = myURL.hostname;
         }
 
