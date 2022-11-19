@@ -1,4 +1,6 @@
 name: TlsTestGate-Test
+env:
+  NODE_VERSION: 16
 on:
   pull_request:
 jobs:
@@ -34,3 +36,16 @@ jobs:
         with:
           name: pytest-results for ${{ matrix.python-version }}
           path: "coverage.xml"
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: buildAndReleaseTask/package-lock.json
+      - name: Install packages
+        run: npm ci
+        working-directory: buildAndReleaseTask
+
+      - name: Run lint
+        run: npm run lint
+        working-directory: buildAndReleaseTask
