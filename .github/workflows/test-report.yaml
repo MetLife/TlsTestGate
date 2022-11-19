@@ -11,6 +11,6 @@ jobs:
       - uses: dorny/test-reporter@v1
         with:
           artifact: test-results # artifact name
-          name: JEST Tests
+          name: pytest-results for Python 3.10
           path: "*.xml"
-          reporter: jest-junit # Format of test results
+          reporter: java-junit # Format of test results

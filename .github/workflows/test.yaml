@@ -28,13 +28,13 @@ jobs:
         uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
-          name: pytest-results for ${{ matrix.python-version }}
+          name: pytest-results for Python ${{ matrix.python-version }}
           path: "test-output.xml"
       - name: Upload coverage results
         uses: actions/upload-artifact@v3
         if: success() || failure()
         with:
-          name: pytest-results for ${{ matrix.python-version }}
+          name: pytest-results for Python ${{ matrix.python-version }}
           path: "coverage.xml"
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
