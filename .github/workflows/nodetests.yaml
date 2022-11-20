@@ -15,7 +15,7 @@ jobs:
           cache: "npm"
           cache-dependency-path: buildAndReleaseTask/package-lock.json
       - name: Install packages
-        run: npm ci
+        run: npm install
         working-directory: buildAndReleaseTask
       - name: Run lint
         run: npm run lint
