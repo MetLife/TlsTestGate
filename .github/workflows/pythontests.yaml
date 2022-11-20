@@ -31,13 +31,6 @@ jobs:
           name: pytest-results for Python ${{ matrix.python-version }}
           path: "test-output.xml"
           reporter: java-junit
-      - name: Upload coverage results
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: pytest-results for Python ${{ matrix.python-version }}
-          path: "coverage.xml"
-          reporter: java-junit
       - name: Set up Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@2fddd8803e2f5c9604345a0b591c3020ee971a93 # tag=v3.4.1
         with:
