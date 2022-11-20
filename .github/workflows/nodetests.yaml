@@ -17,8 +17,8 @@ jobs:
       - name: Install packages
         run: npm install
         working-directory: buildAndReleaseTask
-      - name: Install chai/mocha
-        run: npm install chai mocha
+      - name: Install chai/mocha/ts-node
+        run: npm install chai mocha ts-node
         working-directory: buildAndReleaseTask
       - name: Run lint
         run: npm run lint
