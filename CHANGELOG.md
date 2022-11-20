@@ -46,3 +46,4 @@
 - Added dependabot
 - Added Microsoft Typescript security linters
 - Removed deprecated node api call (url.parse)
+- Moved CI from Azure DevOps to GitHub Actions
