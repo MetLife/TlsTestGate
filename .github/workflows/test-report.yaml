@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: dorny/test-reporter@v1
         with:
-          artifact: test-results # artifact name
+          artifact: pytest-results for Python 3.10 # artifact name
           name: pytest-results for Python 3.10
           path: "*.xml"
           reporter: java-junit # Format of test results
