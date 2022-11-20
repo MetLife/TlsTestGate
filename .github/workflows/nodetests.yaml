@@ -31,5 +31,5 @@ jobs:
         if: success() || failure()
         with:
           name: mocha test results for Node.js ${{ env.NODE_VERSION }}
-          path: "ResultsFile.xml"
+          path: "buildAndReleaseTask/ResultsFile.xml"
           reporter: java-junit
